@@ -35,21 +35,15 @@ Bem-vindo ao repositório principal do nosso projeto! Este repositório contém 
 /
 ├── docs/
 │   ├── requisitos/
-│   │   └── requisitos.md
+│   │   └── requisitos.pdf
 │   ├── casos_de_uso/
-│   │   └── casos_de_uso.md
-│   └── README.md
-├── img/
-│   ├── Diagrama_de_Casos_de_Uso.png
-│   └── README.md
+│   │   └── casos_de_uso.pdf
 ├── src/
-│   ├── main/
-│   │   └── ... (código fonte do projeto)
+│   ├── trabalhoArduino/
+│   │   └── TrabalhoArduino (código fonte do projeto)
 │   └── test/
 │       └── ... (testes do projeto)
-├── img/
-│   └── ImgSaoLucas.PNG
-└── README.md
+| README.md
 
 ```
 
@@ -78,7 +72,7 @@ Siga os passos abaixo para clonar e configurar o repositório em seu ambiente lo
    ```
 2. Navegue até o diretório do projeto:
    ```bash
-   cd nome-do-repositorio
+   cd TrabalhoArduino
    ```
 
 

@@ -1,7 +1,6 @@
-package trabalhoarduino;
+package trabalhoArduino;
 
-import java.util.Scanner;
-import java.io.IOException;
+import com.fazecast.jSerialComm;
 
 public class TrabalhoArduino {
 
