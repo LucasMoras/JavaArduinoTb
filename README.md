@@ -1,6 +1,7 @@
 # TrabalhoArduino
+
 <div align="center" style="background-color: white; max-width: 100%;">
-  <img alt="BANNER com título: Da Análise ao Código" title="Banner_ADS_v2" src="img/ImgSaoLucas.PNG" width="100%" />
+  
 </div>
 
 # README principal do Projeto
@@ -65,8 +66,8 @@ Os seguintes diagramas estão disponíveis neste repositório:
 
 ## Requisitos de Sistema
 
-- **Sistema Operacional**: Windows, macOS ou Linux
-- **Linguagem de Programação**: [Especificar a linguagem e a versão, ex: Python 3.9, Java 11, etc.]
+- **Sistema Operacional**: Windows.
+- **Linguagem de Programação**: [Java]
 
 
 ## Instalação
@@ -75,7 +76,7 @@ Siga os passos abaixo para clonar e configurar o repositório em seu ambiente lo
 
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/seu-usuario/nome-do-repositorio.git
+   git clone https://github.com/LucasMoras/JavaArduinoTb.git
    ```
 2. Navegue até o diretório do projeto:
    ```bash
@@ -85,6 +86,6 @@ Siga os passos abaixo para clonar e configurar o repositório em seu ambiente lo
 
 ## Contato
 
-Para mais informações, entre em contato através do e-mail [ederderosso@gmail.com] ou visite nossa página de [Repositório](https://github.com/EderRosso/Analise-de-Sistemas).
+Para mais informações, entre em contato através dos e-mails [lucasmoras63@gmail.com, brunojiuteiro007b@gmail.com, oliveiramatheus21322@gmail.com] ou visite nossa página de [Repositório](https://github.com/EderRosso/Analise-de-Sistemas).
 
 ---
