@@ -13,9 +13,7 @@
 | [<img src="https://avatars.githubusercontent.com/u/137101703?s=96&v=4" width="80px"/>](https://github.com/LucasMoras) |[<img src="https://avatars.githubusercontent.com/u/168769429?v=4" width="80px"](https://github.com/MatheusOliveirap) | [<img src="https://avatars.githubusercontent.com/u/137101698?v=4" width="75px"/>](https://github.com/BrunoSchwartzVieira);
 | :------------------------------------------------------------------------------------------------------------------------: |
 
-| [Lucas Morás](https://github.com/LucasMoras), [Matheus Oliveira](https://github.com/MatheusOliveirap), [Bruno Schwartz]
-
-
+| [Lucas Morás](https://github.com/LucasMoras), [Matheus Oliveira](https://github.com/MatheusOliveirap), [Bruno Schwartz](https://github.com/BrunoSchwartzVieira).
 
 
 ## Índice
