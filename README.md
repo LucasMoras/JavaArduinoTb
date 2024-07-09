@@ -10,9 +10,9 @@
 <div align="center"><h1>Exemplo de Análise de Sistemas</h1><p><b>Exemplo de criação da documentação de um projeto exemplo</b></p></div>
 
 ## Participantes
-|  <img src="https://avatars.githubusercontent.com/u/137101703?s=96&v=4" width="80px"/>( )<img src="https://avatars.githubusercontent.com/u/168769429?v=4" width="80px"/>( )<img src="https://avatars.githubusercontent.com/u/137101698?v=4" width="80px"/>
+  <img src="https://avatars.githubusercontent.com/u/137101703?s=96&v=4" width="80px"/>  <img src="https://avatars.githubusercontent.com/u/168769429?v=4" width="80px"/>  <img src="https://avatars.githubusercontent.com/u/137101698?v=4" width="80px"/>
 
-| [Lucas Morás](https://github.com/LucasMoras), [Matheus Oliveira](https://github.com/MatheusOliveirap), [Bruno Schwartz](https://github.com/BrunoSchwartzVieira).
+ [Lucas Morás](https://github.com/LucasMoras), [Matheus Oliveira](https://github.com/MatheusOliveirap), [Bruno Schwartz](https://github.com/BrunoSchwartzVieira).
 
 
 ## Índice
