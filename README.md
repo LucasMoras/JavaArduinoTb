@@ -55,6 +55,8 @@ Bem-vindo ao repositório principal do nosso projeto! Este repositório contém 
 
 Os seguintes diagramas estão disponíveis neste repositório:
 
+https://app.diagrams.net/#G1-QYH01Mmlf6stFjORZ4IkS2VhKERxHji#%7B%22pageId%22%3A%22HX1JxBT3Mb6QcUEd4l4N%22%7D.
+
 ## Requisitos de Sistema
 
 - **Sistema Operacional**: Windows.
