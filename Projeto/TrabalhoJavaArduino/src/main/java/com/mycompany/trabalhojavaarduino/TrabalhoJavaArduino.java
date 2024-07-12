@@ -1,19 +1,26 @@
 package com.mycompany.trabalhojavaarduino;
 
-import gnu.io.CommPortIdentifier;
-import gnu.io.SerialPort;
-import gnu.io.SerialPortEvent;
-import gnu.io.SerialPortEventListener;
+import com.fazecast.jSerialComm.SerialPort;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.OutputStream;
-import java.util.Enumeration;
+import java.util.Scanner;
 
 public class TrabalhoJavaArduino extends JFrame {
+    private static final String TITLE = "Comunicação com Arduino";
+    private static final int FRAME_WIDTH = 600;
+    private static final int FRAME_HEIGHT = 500;
+
+    private static final Color TOP_PANEL_COLOR = new Color(70, 130, 180);
+    private static final Color CONNECT_BUTTON_COLOR = new Color(46, 139, 87);
+    private static final Color DISCONNECT_BUTTON_COLOR = new Color(220, 20, 60);
+    private static final Color SEND_BUTTON_COLOR = new Color(70, 130, 180);
+    private static final Color STATUS_AREA_COLOR = new Color(230, 230, 250);
+    private static final Color MESSAGE_PANEL_COLOR = new Color(245, 245, 245);
+
     private JComboBox<String> portList;
     private JButton connectButton;
     private JButton disconnectButton;
@@ -22,42 +29,64 @@ public class TrabalhoJavaArduino extends JFrame {
     private JTextField messageField;
 
     private SerialPort serialPort;
-    private CommPortIdentifier selectedPortIdentifier;
     private OutputStream output;
-    private static final int TIMEOUT = 2000;
-    private static final int DATA_RATE = 9600;
 
     public TrabalhoJavaArduino() {
-        setTitle("Comunicação com Arduino");
-        setSize(600, 500);
+        setupFrame();
+        setupComponents();
+        listAvailablePorts();
+    }
+
+    private void setupFrame() {
+        setTitle(TITLE);
+        setSize(FRAME_WIDTH, FRAME_HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new GridBagLayout());
         setResizable(false);
+    }
 
+    private void setupComponents() {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Configuração do painel superior
+        JPanel topPanel = createTopPanel(gbc);
+        JPanel messagePanel = createMessagePanel(gbc);
+        JScrollPane scrollPane = createStatusArea(gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        add(topPanel, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        add(messagePanel, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.fill = GridBagConstraints.BOTH;
+        add(scrollPane, gbc);
+    }
+
+    private JPanel createTopPanel(GridBagConstraints gbc) {
         JPanel topPanel = new JPanel(new GridBagLayout());
-        topPanel.setBackground(new Color(70, 130, 180));
+        topPanel.setBackground(TOP_PANEL_COLOR);
         topPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         JLabel portLabel = new JLabel("Selecionar Porta:");
         portLabel.setForeground(Color.WHITE);
 
         portList = new JComboBox<>();
-        connectButton = new JButton("Conectar");
-        connectButton.setBackground(new Color(46, 139, 87));
-        connectButton.setForeground(Color.WHITE);
-        connectButton.setFocusPainted(false);
-
-        disconnectButton = new JButton("Desconectar");
-        disconnectButton.setBackground(new Color(220, 20, 60));
-        disconnectButton.setForeground(Color.WHITE);
+        connectButton = createButton("Conectar", CONNECT_BUTTON_COLOR);
+        disconnectButton = createButton("Desconectar", DISCONNECT_BUTTON_COLOR);
         disconnectButton.setEnabled(false);
-        disconnectButton.setFocusPainted(false);
+
+        connectButton.addActionListener(e -> connect());
+        disconnectButton.addActionListener(e -> disconnect());
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -75,18 +104,20 @@ public class TrabalhoJavaArduino extends JFrame {
         gbc.gridy = 1;
         topPanel.add(disconnectButton, gbc);
 
-        // Configuração do campo de mensagem e botão de envio
+        return topPanel;
+    }
+
+    private JPanel createMessagePanel(GridBagConstraints gbc) {
         JPanel messagePanel = new JPanel(new GridBagLayout());
-        messagePanel.setBackground(new Color(245, 245, 245));
+        messagePanel.setBackground(MESSAGE_PANEL_COLOR);
         messagePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         JLabel messageLabel = new JLabel("Mensagem:");
         messageField = new JTextField(20);
-        sendButton = new JButton("Enviar");
-        sendButton.setBackground(new Color(70, 130, 180));
-        sendButton.setForeground(Color.WHITE);
+        sendButton = createButton("Enviar", SEND_BUTTON_COLOR);
         sendButton.setEnabled(false);
-        sendButton.setFocusPainted(false);
+
+        sendButton.addActionListener(e -> sendMessage());
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -100,10 +131,13 @@ public class TrabalhoJavaArduino extends JFrame {
         gbc.gridy = 0;
         messagePanel.add(sendButton, gbc);
 
-        // Configuração da área de status
+        return messagePanel;
+    }
+
+    private JScrollPane createStatusArea(GridBagConstraints gbc) {
         statusArea = new JTextArea();
         statusArea.setEditable(false);
-        statusArea.setBackground(new Color(230, 230, 250));
+        statusArea.setBackground(STATUS_AREA_COLOR);
         statusArea.setForeground(Color.BLACK);
         statusArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
         statusArea.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -111,110 +145,64 @@ public class TrabalhoJavaArduino extends JFrame {
         JScrollPane scrollPane = new JScrollPane(statusArea);
         scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 2;
-        add(topPanel, gbc);
+        return scrollPane;
+    }
 
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        add(messagePanel, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.BOTH;
-        add(scrollPane, gbc);
-
-        listAvailablePorts();
-
-        connectButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                connect();
-            }
-        });
-
-        disconnectButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                disconnect();
-            }
-        });
-
-        sendButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                sendMessage();
-            }
-        });
+    private JButton createButton(String text, Color color) {
+        JButton button = new JButton(text);
+        button.setBackground(color);
+        button.setForeground(Color.WHITE);
+        button.setFocusPainted(false);
+        return button;
     }
 
     private void listAvailablePorts() {
-        Enumeration<CommPortIdentifier> portEnum = CommPortIdentifier.getPortIdentifiers();
-        while (portEnum.hasMoreElements()) {
-            CommPortIdentifier portIdentifier = portEnum.nextElement();
-            if (portIdentifier.getPortType() == CommPortIdentifier.PORT_SERIAL) {
-                portList.addItem(portIdentifier.getName());
-            }
+        SerialPort[] ports = SerialPort.getCommPorts();
+        for (SerialPort port : ports) {
+            portList.addItem(port.getSystemPortName());
         }
     }
 
     private void connect() {
         String selectedPort = (String) portList.getSelectedItem();
+        if (selectedPort == null) {
+            appendStatus("Nenhuma porta selecionada.");
+            return;
+        }
+
         try {
-            if (selectedPort == null) {
-                statusArea.append("Nenhuma porta selecionada.\n");
-                return;
-            }
-            selectedPortIdentifier = CommPortIdentifier.getPortIdentifier(selectedPort);
-            serialPort = (SerialPort) selectedPortIdentifier.open("ArduinoCommunicationApp", TIMEOUT);
-            serialPort.setSerialPortParams(DATA_RATE, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+            serialPort = SerialPort.getCommPort(selectedPort);
+            serialPort.setComPortParameters(9600, 8, SerialPort.ONE_STOP_BIT, SerialPort.NO_PARITY);
+            serialPort.setComPortTimeouts(SerialPort.TIMEOUT_WRITE_BLOCKING, 0, 0);
 
-            output = serialPort.getOutputStream();
+            if (serialPort.openPort()) {
+                output = serialPort.getOutputStream();
+                updateUIOnConnect();
+                appendStatus("Conectado à " + selectedPort);
 
-            serialPort.addEventListener(new SerialPortEventListener() {
-                @Override
-                public void serialEvent(SerialPortEvent event) {
-                    if (event.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
-                        try {
-                            byte[] readBuffer = new byte[20];
-                            int numBytes = serialPort.getInputStream().read(readBuffer);
-                            if (numBytes > 0) {
-                                statusArea.append("Recebido: " + new String(readBuffer, 0, numBytes) + "\n");
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            statusArea.append("Erro ao ler da porta: " + e.getMessage() + "\n");
-                        }
+                new Thread(() -> {
+                    Scanner scanner = new Scanner(serialPort.getInputStream());
+                    while (scanner.hasNextLine()) {
+                        appendStatus("Recebido: " + scanner.nextLine());
                     }
-                }
-            });
-
-            serialPort.notifyOnDataAvailable(true);
-            connectButton.setEnabled(false);
-            disconnectButton.setEnabled(true);
-            sendButton.setEnabled(true);
-            statusArea.append("Conectado à " + selectedPort + "\n");
+                    scanner.close();
+                }).start();
+            } else {
+                appendStatus("Falha ao conectar a " + selectedPort);
+            }
         } catch (Exception e) {
-            e.printStackTrace();
-            statusArea.append("Falha ao conectar a " + selectedPort + ": " + e.getMessage() + "\n");
+            handleException("Falha ao conectar a " + selectedPort, e);
         }
     }
 
     private void disconnect() {
-        if (serialPort != null) {
+        if (serialPort != null && serialPort.isOpen()) {
             try {
-                serialPort.removeEventListener();
-                serialPort.close();
-                statusArea.append("Desconectado\n");
-                connectButton.setEnabled(true);
-                disconnectButton.setEnabled(false);
-                sendButton.setEnabled(false);
+                serialPort.closePort();
+                updateUIOnDisconnect();
+                appendStatus("Desconectado");
             } catch (Exception e) {
-                e.printStackTrace();
-                statusArea.append("Falha ao desconectar: " + e.getMessage() + "\n");
+                handleException("Falha ao desconectar", e);
             }
         }
     }
@@ -222,26 +210,42 @@ public class TrabalhoJavaArduino extends JFrame {
     private void sendMessage() {
         String message = messageField.getText();
         if (message.isEmpty()) {
-            statusArea.append("Nenhuma mensagem para enviar.\n");
+            appendStatus("Nenhuma mensagem para enviar.");
             return;
         }
+
         try {
             output.write(message.getBytes());
             output.flush();
-            statusArea.append("Enviado: " + message + "\n");
+            appendStatus("Enviado: " + message);
             messageField.setText("");
         } catch (Exception e) {
-            e.printStackTrace();
-            statusArea.append("Falha ao enviar mensagem: " + e.getMessage() + "\n");
+            handleException("Falha ao enviar mensagem", e);
         }
     }
 
+    private void appendStatus(String message) {
+        statusArea.append(message + "\n");
+    }
+
+    private void handleException(String message, Exception e) {
+        e.printStackTrace();
+        appendStatus(message + ": " + e.getMessage());
+    }
+
+    private void updateUIOnConnect() {
+        connectButton.setEnabled(false);
+        disconnectButton.setEnabled(true);
+        sendButton.setEnabled(true);
+    }
+
+    private void updateUIOnDisconnect() {
+        connectButton.setEnabled(true);
+        disconnectButton.setEnabled(false);
+        sendButton.setEnabled(false);
+    }
+
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new TrabalhoJavaArduino().setVisible(true);
-            }
-        });
+        SwingUtilities.invokeLater(() -> new TrabalhoJavaArduino().setVisible(true));
     }
 }
