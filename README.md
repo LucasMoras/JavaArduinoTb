@@ -37,8 +37,9 @@ Projeto\
    ->Casos de uso\
       -ArduinoJAVA.drwaio.pdf 
    ->Documentação\
-      -Documentação.pdf
-      -Manual do usuario 
+      -Manual do usuario.docx
+      -Proposta.docx
+      -Requisitos.docx
 --->TrabalhoArdJava\
    ->src\
       -main\
