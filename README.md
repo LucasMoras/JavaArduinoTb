@@ -32,17 +32,23 @@ Bem-vindo ao repositório principal do nosso projeto! Este repositório contém 
 
 ```
 /
-├── docs/
-│   ├── requisitos/
-│   │   └── requisitos.pdf
-│   ├── casos_de_uso/
-│   │   └── casos_de_uso.pdf
-├── src/
-│   ├── trabalhoArduino/
-│   │   └── TrabalhoArduino (código fonte do projeto)
-│   └── test/
-│       └── ... (testes do projeto)
-| README.md
+Projeto\
+--->Docs\
+   ->Casos de uso\
+      -ArduinoJAVA.drwaio.pdf 
+   ->Documentação\
+      -Manual do usuario.docx
+      -Proposta.docx
+      -Requisitos.docx
+--->TrabalhoArdJava\
+   ->src\
+      -main\
+         -java\
+            -com\
+               -mycompany\
+                  -trabalhojavaarduino\
+                     -trabalhoJavaArdunio.java
+README.
 
 ```
 
